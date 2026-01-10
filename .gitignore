@@ -1,0 +1,72 @@
+############################
+# IDEs & Editors
+############################
+.idea/
+.vscode/
+*.iml
+
+############################
+# OS
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Dart / Flutter
+############################
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub/
+.pub-cache/
+build/
+
+############################
+# Android
+############################
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/*.keystore
+*.jks
+
+############################
+# iOS / macOS
+############################
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/.last_build_id
+ios/Runner.xcworkspace
+ios/Runner/GeneratedPluginRegistrant.*
+
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/Flutter/GeneratedPluginRegistrant.swift
+
+############################
+# Web
+############################
+web/.dart_tool/
+
+############################
+# Windows / Linux
+############################
+windows/flutter/generated_plugin_registrant.*
+linux/flutter/generated_plugin_registrant.*
+
+############################
+# Coverage & Logs
+############################
+coverage/
+*.log
+
+############################
+# Secrets (unencrypted only)
+############################
+.env
+*.pem
+*.key
+*.p12
+*.keystore
