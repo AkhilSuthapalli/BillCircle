@@ -13,6 +13,12 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
 
+  # Firebase packages
+  firebase_core: ^4.3.0 # Core functionality
+  cloud_firestore: 6.1.1 # Cloud datastore to connect to backend
+  cloud_firestore_web: 5.1.1 # Cloud datastore to connect to backend for webapp
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -20,3 +26,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+dependency_overrides:
+  cloud_firestore_web: 5.1.1

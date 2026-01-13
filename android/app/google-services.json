@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "744300816280",
+    "project_id": "akhilsuthapalli-billcircle",
+    "storage_bucket": "akhilsuthapalli-billcircle.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744300816280:android:163ddd8473ec8465ceaded",
+        "android_client_info": {
+          "package_name": "com.akhilsuthapalli.billcircle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3BjSfTyIk1tu7_e-_o91abBXdnanv5PU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

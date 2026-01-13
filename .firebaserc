@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "akhilsuthapalli-billcircle"
-  }
+  },
+  "targets": {
+    "akhilsuthapalli-billcircle": {
+      "hosting": {
+        "app": [
+          "billcircle-app"
+        ],
+        "homesite": [
+          "akhilsuthapalli-billcircle"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
