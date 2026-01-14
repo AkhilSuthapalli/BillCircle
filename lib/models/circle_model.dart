@@ -37,7 +37,7 @@ class CircleModel {
     return CircleModel(
       id: doc.id,
       name: data['name'],
-      description: data['name'],
+      description: data['description'],
       visibility: data['visibility'],
       currencyCode: data['currencyCode'],
       accessToken: data['accessToken'],

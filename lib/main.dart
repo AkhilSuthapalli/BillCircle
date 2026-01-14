@@ -33,38 +33,50 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
-
+class MyApp extends StatefulWidget {
   final String? token;
   final String? action;
   const MyApp({super.key, required this.token, required this.action});
 
-  Widget _defineAction(){
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-    if (action == "create") {
-      print("Action Create received");
-      return const CreateCircleScreen();
-    }else if(token != '' && token != null){
-      print("Found token $token, loading it");
-      return LoadCircleScreen(token: token!);
-    }else {
-      print("Default");
-      return MainScreen(token: token);
-    }
+class _MyAppState extends State<MyApp> {
+  // We store the widget in a variable so it never changes
+  // when the theme toggles.
+  late Widget _initialScreen;
 
+  @override
+  void initState() {
+    super.initState();
+    // Logic runs ONCE at startup
+    _initialScreen = _defineAction();
   }
 
+  Widget _defineAction() {
+    if (widget.action == "create") {
+      return const CreateCircleScreen();
+    } else if (widget.token != '' && widget.token != null) {
+      return LoadCircleScreen(token: widget.token!);
+    } else {
+      return MainScreen(token: widget.token);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // This watch only triggers a repaint of colors now,
+    // it doesn't re-run _defineAction()
     final theme = context.watch<ThemeController>();
+
     return MaterialApp(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: theme.mode,
-      home: _defineAction(),
+      home: _initialScreen, // Use the cached variable
     );
   }
 }

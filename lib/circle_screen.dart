@@ -36,6 +36,11 @@ class _CircleScreenState extends State<CircleScreen> {
   bool _membersLoading = true;
   Map<String, String> _memberNameMap = {};
 
+  // Trying to initialize the stream at the start of the page build
+  late Stream<List<MemberModel>> _membersStream;
+  late Stream<CircleModel> _circleStream;
+  late Stream<List<ExpenseModel>> _expensesStream;
+
 
   @override
   void initState() {
@@ -45,8 +50,10 @@ class _CircleScreenState extends State<CircleScreen> {
         setState(() => _isLoggedIn = user != null);
       }
     });
-    _membersSub = FirebaseHelper.instance
-        .watchMembers(widget.circleId)
+    _membersStream = FirebaseHelper.instance.watchMembers(widget.circleId);
+    _circleStream = FirebaseHelper.instance.watchCircle(widget.circleId);
+    _expensesStream = FirebaseHelper.instance.watchExpenses(widget.circleId);
+    _membersSub = FirebaseHelper.instance.watchMembers(widget.circleId)
         .listen((members) {
       if (mounted) {
         setState(() {
@@ -63,6 +70,7 @@ class _CircleScreenState extends State<CircleScreen> {
   @override
   void dispose() {
     _authSub.cancel();
+    _membersSub.cancel();
     super.dispose();
   }
 
@@ -85,7 +93,7 @@ class _CircleScreenState extends State<CircleScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<CircleModel>(
-      stream: FirebaseHelper.instance.watchCircle(widget.circleId),
+      stream: _circleStream,
       builder: (context, snap) {
         if (!snap.hasData) {
           return const Scaffold(
@@ -135,7 +143,7 @@ class _CircleScreenState extends State<CircleScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black12)),
+        border: Border(bottom: BorderSide()),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +164,6 @@ class _CircleScreenState extends State<CircleScreen> {
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
                       circle.description,
-                      style: const TextStyle(color: Colors.grey),
                     ),
                   ),
               ],
@@ -187,7 +194,7 @@ class _CircleScreenState extends State<CircleScreen> {
 
   Widget _membersSection(CircleModel circle, bool canEdit) {
     return StreamBuilder<List<MemberModel>>(
-      stream: FirebaseHelper.instance.watchMembers(circle.id),
+      stream: _membersStream,
       builder: (context, snap) {
         if (!snap.hasData) return const SizedBox();
         final members = snap.data!;
@@ -242,7 +249,7 @@ class _CircleScreenState extends State<CircleScreen> {
 
   Widget _expensesSection(CircleModel circle, String symbol, bool canEdit,) {
     return StreamBuilder<List<ExpenseModel>>(
-      stream: FirebaseHelper.instance.watchExpenses(circle.id),
+      stream: _expensesStream,
       builder: (context, snap) {
         if (!snap.hasData) return const SizedBox();
 

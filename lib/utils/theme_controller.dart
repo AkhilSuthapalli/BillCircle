@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static ThemeData light = ThemeData(
+  static final ThemeData light = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: ColorScheme(
@@ -39,7 +39,7 @@ class AppTheme {
     textTheme: Typography.material2021().black,
   );
 
-  static ThemeData dark = ThemeData(
+  static final ThemeData dark = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: ColorScheme(
@@ -80,7 +80,7 @@ class AppTheme {
 
 
 class ThemeController extends ChangeNotifier {
-  ThemeMode _mode = ThemeMode.system;
+  ThemeMode _mode = ThemeMode.dark;
 
   ThemeMode get mode => _mode;
 
