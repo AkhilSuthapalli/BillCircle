@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+import '../models/member_model.dart';
 
 class AuthService {
   static final _auth = FirebaseAuth.instance;
 
   static User? get currentUser => _auth.currentUser;
   static UserCredential? userCredential;
+
+  static DocumentSnapshot? userDetails;
+  static String get userName => userDetails?.get("displayName") ?? "Guest";
+
 
   // Sign in with Google Popup
   Future<bool?> signInWithGoogleWeb() async {
@@ -19,7 +25,8 @@ class AuthService {
     try {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       userCredential = await _auth.signInWithPopup(googleProvider);
-      print(FirebaseAuth.instance.currentUser?.displayName);
+      User? user = userCredential?.user;
+      if (user != null) userDetails = await checkSync(user);
       return true;
     } catch (e) {
       print("Error during Google Sign-In: $e");

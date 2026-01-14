@@ -1,8 +1,13 @@
+import 'package:billcircle/main.dart';
 import 'package:billcircle/utils/auth_service.dart';
+import 'package:billcircle/utils/platform_resolver.dart';
+import 'package:billcircle/utils/web_app_solver.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'android_app_solver.dart';
 import 'app_constants.dart';
 import 'theme_controller.dart';
 
@@ -10,14 +15,12 @@ enum _ProfileAction { profile, logout }
 
 class CommonAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final String? title;
   final bool showBack;
   final VoidCallback? onBack;
   final List<Widget>? actions;
 
   const CommonAppBar({
     super.key,
-    this.title,
     this.showBack = false,
     this.onBack,
     this.actions,
@@ -41,7 +44,18 @@ class CommonAppBar extends StatelessWidget
             onPressed: onBack,
           )
               : null,
-          title: Text(title ?? AppConstants.appName),
+          title: TextButton(
+            onPressed: () {
+              if(kIsWeb){
+                resolver.clearUrl();
+              }
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const MainScreen(token: '',),
+                ),
+              );
+              },
+            child: Text(AppConstants.appName),),
           actions: [
             IconButton(
               tooltip: 'Toggle theme',

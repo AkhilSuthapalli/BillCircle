@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SnackbarHelper {
   static void show(
@@ -156,5 +157,55 @@ class _AnimatedAlert extends StatelessWidget {
       ),
     );
   }
+}
+
+void shareCircle(BuildContext context, String accessToken) {
+  final url = 'https://app.billcircle.in?circle=$accessToken';
+
+  showModalBottomSheet(
+    context: context,
+    builder: (_) => Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Share circle',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          SelectableText(
+            url,
+            style: const TextStyle(fontSize: 14),
+          ),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              ElevatedButton.icon(
+                icon: const Icon(Icons.copy),
+                label: const Text('Copy link'),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: url));
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Link copied to clipboard'),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
 

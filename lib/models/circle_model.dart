@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CircleModel {
-  final String id; // not sure
+  final String id; // document ID for referencing
   final String name; // Name of the circle
   final String description; // description of the circle
   final String currencyCode;
   final String visibility; // public | private
   final String accessToken; // For link creation
-  final bool isLocked; // To lock from the users to further modify. only works if the circle is created with account
+  bool isLocked; // To lock from the users to further modify. only works if the circle is created with account
 
   // To set permissions that the circle can be edited when link is used coupled with authentication
   // true: anyone with link can edit, false: no one can edit
@@ -52,9 +52,11 @@ class CircleModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'description': description,
       'visibility': visibility,
       'accessToken': accessToken,
       'isLocked': isLocked,
+      'currencyCode' : currencyCode,
       'linkCanEdit': linkCanEdit,
       'ownerUid': ownerUid,
       'createdAt': createdAt,

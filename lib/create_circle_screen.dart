@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:billcircle/models/member_model.dart';
+import 'package:billcircle/utils/auth_service.dart';
 import 'package:billcircle/utils/currency_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../utils/app_constants.dart';
 import '../utils/ui_helpers.dart';
 import '../utils/app_bar.dart';
-import 'firebase_helper.dart';
+import 'utils/firebase_helper.dart';
 import 'loading_circle_screen.dart';
 
 class CreateCircleScreen extends StatefulWidget {
@@ -74,8 +76,17 @@ class _CreateCircleScreenState extends State<CreateCircleScreen> {
         ownerUid: _isLoggedIn ? FirebaseAuth.instance.currentUser?.uid : null,
         currencyCode: _selectedCurrencyCode,
       ).then((e){
-        print("Creation successful");
         SnackbarHelper.show(context, 'Circle created successfully');
+        if(_isLoggedIn){
+          FirebaseHelper.instance.addMember(
+            circleId: e.id,
+            member: MemberModel.createNew(
+              id: AuthService.currentUser!.uid,
+              displayName: AuthService.userName,
+              role: MemberRole.owner
+            )
+          );
+        }
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (_) => LoadCircleScreen(token: accessToken),
@@ -100,13 +111,11 @@ class _CreateCircleScreenState extends State<CreateCircleScreen> {
       duration: const Duration(milliseconds: 180),
       child: Scaffold(
         appBar: const CommonAppBar(
-          title: 'Create Circle',
           showBack: false,
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints:
-            const BoxConstraints(maxWidth: AppConstants.maxPageWidth),
+            constraints: const BoxConstraints(maxWidth: AppConstants.maxPageWidth),
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Card(

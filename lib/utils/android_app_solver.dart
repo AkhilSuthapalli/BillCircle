@@ -12,5 +12,11 @@ class AndroidAppSolver implements PlatformResolver {
     // Deep links will be handled here later
     return null;
   }
+
+  @override
+  void clearUrl() {
+    // TODO: implement clearUrl
+    throw UnimplementedError();
+  }
 }
 

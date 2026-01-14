@@ -1,7 +1,8 @@
+import 'package:billcircle/utils/app_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'models/circle_model.dart';
-import 'models/expense_model.dart';
-import 'models/member_model.dart';
+import '../models/circle_model.dart';
+import '../models/expense_model.dart';
+import '../models/member_model.dart';
 import 'dart:math';
 
 String generateSecureToken({int length = 24}) {
@@ -41,6 +42,14 @@ class FirebaseHelper {
     return CircleModel.fromDoc(query.docs.first);
   }
 
+  Stream<CircleModel> watchCircle(String circleId) {
+    return _db
+        .collection(AppConstants.circlesCollection)
+        .doc(circleId)
+        .snapshots()
+        .map((doc) => CircleModel.fromDoc(doc));
+  }
+
   Future<DocumentReference> createCircle({
     required String name,
     required String description,
@@ -63,14 +72,18 @@ class FirebaseHelper {
         createdAt: Timestamp.fromDate(DateTime.now()),
         updatedAt: Timestamp.fromDate(DateTime.now()));
     print(circle);
-    return _db.collection('circles').add(circle.toMap());
+    return _db.collection(AppConstants.circlesCollection).add(circle.toMap());
   }
 
-  Future<void> lockCircle(String circleId) {
-    return _db.collection('circles').doc(circleId).update({
-      'isLocked': true,
-      'updatedAt': FieldValue.serverTimestamp(),
+  Future<void> lockCircle(String circleId, bool state) {
+    return _db.collection(AppConstants.circlesCollection).doc(circleId).update({
+      'isLocked': state,
+      'updatedAt': Timestamp.fromDate(DateTime.now()),
     });
+  }
+
+  Future<void> deleteCircle(String circleId) {
+    return _db.collection(AppConstants.circlesCollection).doc(circleId).delete();
   }
 
   // ---------------------------
@@ -82,17 +95,17 @@ class FirebaseHelper {
     required ExpenseModel expense,
   }) {
     return _db
-        .collection('circles')
+        .collection(AppConstants.circlesCollection)
         .doc(circleId)
-        .collection('expenses')
+        .collection(AppConstants.expensesCollection)
         .add(expense.toMap());
   }
 
   Stream<List<ExpenseModel>> watchExpenses(String circleId) {
     return _db
-        .collection('circles')
+        .collection(AppConstants.circlesCollection)
         .doc(circleId)
-        .collection('expenses')
+        .collection(AppConstants.expensesCollection)
         .orderBy('createdAt')
         .snapshots()
         .map(
@@ -110,18 +123,18 @@ class FirebaseHelper {
     required MemberModel member,
   }) {
     return _db
-        .collection('circles')
+        .collection(AppConstants.circlesCollection)
         .doc(circleId)
-        .collection('members')
+        .collection(AppConstants.membersCollection)
         .doc(member.id)
         .set(member.toMap());
   }
 
   Stream<List<MemberModel>> watchMembers(String circleId) {
     return _db
-        .collection('circles')
+        .collection(AppConstants.circlesCollection)
         .doc(circleId)
-        .collection('members')
+        .collection(AppConstants.membersCollection)
         .snapshots()
         .map(
           (snapshot) =>

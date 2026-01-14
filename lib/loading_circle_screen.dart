@@ -1,6 +1,9 @@
 import 'package:billcircle/main.dart';
+import 'package:billcircle/utils/platform_resolver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'firebase_helper.dart';
+import 'circle_screen.dart';
+import 'utils/firebase_helper.dart';
 
 class LoadCircleScreen extends StatelessWidget {
   final String token;
@@ -21,7 +24,7 @@ class LoadCircleScreen extends StatelessWidget {
           return InvalidLinkScreen();
         }
 
-        return CircleHomePlaceholder();
+        return CircleScreen(circleId: snapshot.data!.id);
       },
     );
   }
@@ -91,13 +94,16 @@ class InvalidLinkScreen extends StatelessWidget {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () {
+                  if(kIsWeb){
+                    resolver.clearUrl();
+                  }
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (_) => const MainScreen(token: '',),
                     ),
                   );
                 },
-                child: const Text('Create a new circle'),
+                child: const Text('Go back to main screen'),
               ),
             ],
           ),
@@ -106,29 +112,3 @@ class InvalidLinkScreen extends StatelessWidget {
     );
   }
 }
-
-/// -------------------------------
-/// Temporary placeholder
-/// Replace later with CircleHomeScreen
-/// -------------------------------
-class CircleHomePlaceholder extends StatelessWidget {
-  const CircleHomePlaceholder({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("hi"),
-      ),
-      body: Center(
-        child: Text(
-          'Circle loaded successfully',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-      ),
-    );
-  }
-}
-
-
-
