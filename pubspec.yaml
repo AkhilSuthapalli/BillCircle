@@ -12,11 +12,16 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  provider: 6.1.2 # To update the constants throughout the app
 
   # Firebase packages
   firebase_core: ^4.3.0 # Core functionality
   cloud_firestore: 6.1.1 # Cloud datastore to connect to backend
   cloud_firestore_web: 5.1.1 # Cloud datastore to connect to backend for webapp
+
+  # Authentication
+  firebase_auth: 6.1.3
+  google_sign_in: 7.2.0
 
 
 dev_dependencies:

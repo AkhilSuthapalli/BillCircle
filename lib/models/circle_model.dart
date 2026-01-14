@@ -1,25 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CircleModel {
-  final String id;
-  final String name;
-  final String mode; // anonymous | auth
-  final String visibility; // link | private
-  final String accessToken;
-  final bool isLocked;
-  final Map<String, dynamic> permissions;
-  final String? ownerUid;
-  final Timestamp createdAt;
-  final Timestamp updatedAt;
+  final String id; // not sure
+  final String name; // Name of the circle
+  final String description; // description of the circle
+  final String currencyCode;
+  final String visibility; // public | private
+  final String accessToken; // For link creation
+  final bool isLocked; // To lock from the users to further modify. only works if the circle is created with account
+
+  // To set permissions that the circle can be edited when link is used coupled with authentication
+  // true: anyone with link can edit, false: no one can edit
+  final bool linkCanEdit;
+
+  final String? ownerUid; // valid if the circle created with Google UID
+  final Timestamp createdAt; // First instance of creation
+  final Timestamp updatedAt; // When it got updated
 
   CircleModel({
     required this.id,
     required this.name,
-    required this.mode,
+    required this.description,
     required this.visibility,
+    required this.currencyCode,
     required this.accessToken,
     required this.isLocked,
-    required this.permissions,
+    required this.linkCanEdit,
     required this.createdAt,
     required this.updatedAt,
     this.ownerUid,
@@ -31,11 +37,12 @@ class CircleModel {
     return CircleModel(
       id: doc.id,
       name: data['name'],
-      mode: data['mode'],
+      description: data['name'],
       visibility: data['visibility'],
+      currencyCode: data['currencyCode'],
       accessToken: data['accessToken'],
       isLocked: data['isLocked'],
-      permissions: Map<String, dynamic>.from(data['permissions']),
+      linkCanEdit: data['linkCanEdit'],
       ownerUid: data['ownerUid'],
       createdAt: data['createdAt'],
       updatedAt: data['updatedAt'],
@@ -45,11 +52,10 @@ class CircleModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'mode': mode,
       'visibility': visibility,
       'accessToken': accessToken,
       'isLocked': isLocked,
-      'permissions': permissions,
+      'linkCanEdit': linkCanEdit,
       'ownerUid': ownerUid,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
