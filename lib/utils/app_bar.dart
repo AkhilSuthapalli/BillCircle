@@ -66,57 +66,8 @@ class CommonAppBar extends StatelessWidget
               ),
               onPressed: themeController.toggle,
             ),
-            if (user != null)
-              PopupMenuButton<_ProfileAction>(
-                tooltip: 'Account',
-                onSelected: (action) async {
-                  switch (action) {
-                    case _ProfileAction.profile:
-                      /// TODO: We need to build profile screen
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (_) => const ProfileScreen(),
-                      //   ),
-                      // );
-                      break;
-                    case _ProfileAction.logout:
-                      await AuthService.signOut();
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: _ProfileAction.profile,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.person_outline, size: 18),
-                        SizedBox(width: 12),
-                        Text('Profile'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuDivider(),
-                  PopupMenuItem(
-                    value: _ProfileAction.logout,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.logout, size: 18),
-                        SizedBox(width: 12),
-                        Text('Sign out'),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            else
-              TextButton(
-                onPressed: () async {
-                  bool? successfulSignIn = await AuthService().signInWithGoogleWeb();
-                  print("Sign in Successful: $successfulSignIn");
-                },
-                child: const Text('Sign in with Google'),
-              ),
+            // TODO implement Google Sign in once completed
+            //_signInOption(user),
             if (actions != null) ...actions!,
             const SizedBox(width: 8),
           ],
@@ -125,4 +76,60 @@ class CommonAppBar extends StatelessWidget
     );
 
   }
+
+  Widget _signInOption(User? user){
+    if (user != null) {
+      return PopupMenuButton<_ProfileAction>(
+        tooltip: 'Account',
+        onSelected: (action) async {
+          switch (action) {
+            case _ProfileAction.profile:
+            /// TODO: We need to build profile screen
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (_) => const ProfileScreen(),
+            //   ),
+            // );
+              break;
+            case _ProfileAction.logout:
+              await AuthService.signOut();
+              break;
+          }
+        },
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: _ProfileAction.profile,
+            child: Row(
+              children: const [
+                Icon(Icons.person_outline, size: 18),
+                SizedBox(width: 12),
+                Text('Profile'),
+              ],
+            ),
+          ),
+          const PopupMenuDivider(),
+          PopupMenuItem(
+            value: _ProfileAction.logout,
+            child: Row(
+              children: const [
+                Icon(Icons.logout, size: 18),
+                SizedBox(width: 12),
+                Text('Sign out'),
+              ],
+            ),
+          ),
+        ],
+      );
+    } else {
+      return TextButton(
+        onPressed: () async {
+          bool? successfulSignIn = await AuthService().signInWithGoogleWeb();
+          print("Sign in Successful: $successfulSignIn");
+        },
+        child: const Text('Sign in with Google'),
+      );
+    }
+  }
+
 }

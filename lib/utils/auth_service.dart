@@ -17,11 +17,6 @@ class AuthService {
   // Sign in with Google Popup
   Future<bool?> signInWithGoogleWeb() async {
 
-    if(kIsWeb) {
-      await _auth.signInAnonymously();
-      return true;
-    }
-
     try {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       userCredential = await _auth.signInWithPopup(googleProvider);
