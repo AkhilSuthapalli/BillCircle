@@ -77,7 +77,8 @@ class CommonAppBar extends StatelessWidget
 
   }
 
-  Widget _signInOption(User? user){
+  // TODO: Work on the sign in feature
+  Widget _signInOption(BuildContext context, User? user){
     if (user != null) {
       return PopupMenuButton<_ProfileAction>(
         tooltip: 'Account',
@@ -93,7 +94,7 @@ class CommonAppBar extends StatelessWidget
             // );
               break;
             case _ProfileAction.logout:
-              await AuthService.signOut();
+              await AuthService.signOut(context);
               break;
           }
         },
@@ -125,7 +126,6 @@ class CommonAppBar extends StatelessWidget
       return TextButton(
         onPressed: () async {
           bool? successfulSignIn = await AuthService().signInWithGoogleWeb();
-          print("Sign in Successful: $successfulSignIn");
         },
         child: const Text('Sign in with Google'),
       );
