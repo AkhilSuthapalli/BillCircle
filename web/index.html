@@ -1,19 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -31,8 +19,93 @@
 
   <title>Bill Circle</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- splash screen styling -->
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --brand-text: #3F51B5;
+      --bar-1: #C5CAE9;
+      --bar-2: #3F51B5;
+      --bar-3: #7986CB;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #121212;
+        --brand-text: #D1D9FF;
+        --bar-1: #5C6BC0;
+        --bar-2: #9FA8DA;
+        --bar-3: #7986CB;
+      }
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-color);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+    }
+
+    /* Centering Container */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* The Bar Group */
+    .bill-bars {
+      display: flex;
+      align-items: flex-end; /* Aligns bars to the bottom line */
+      justify-content: center;
+      gap: 8px;
+      height: 60px;
+      margin-bottom: 24px;
+    }
+
+    /* The Individual Bar */
+    .bar {
+      width: 14px;
+      border-radius: 4px;
+      /* Static height so they show up even if animation fails */
+      height: 30%;
+      animation: bill-grow 1.2s infinite ease-in-out;
+    }
+
+    .b1 { background-color: var(--bar-1); animation-delay: 0s; }
+    .b2 { background-color: var(--bar-2); animation-delay: 0.2s; }
+    .b3 { background-color: var(--bar-3); animation-delay: 0.4s; }
+
+    @keyframes bill-grow {
+      0%, 100% { height: 30%; }
+      50% { height: 100%; }
+    }
+
+    .brand {
+      color: var(--brand-text);
+      font-weight: bold;
+      font-size: 28px;
+      letter-spacing: 3px;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
+  <!-- splash screen div -->
+  <div id="loader-content" class="loading-container">
+    <div class="bill-bars">
+      <div class="bar b1"></div>
+      <div class="bar b2"></div>
+      <div class="bar b3"></div>
+    </div>
+    <div class="brand">Bill Circle</div>
+  </div>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

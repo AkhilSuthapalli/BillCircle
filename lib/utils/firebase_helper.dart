@@ -31,7 +31,6 @@ class FirebaseHelper {
   // ---------------------------
 
   Future<CircleModel?> getCircleByToken(String token) async {
-    print("asdasdasdasdasdasd");
     final query = await _db
         .collection('circles')
         .where('accessToken', isEqualTo: token)
@@ -59,7 +58,6 @@ class FirebaseHelper {
     required bool linkCanEdit,
     String? ownerUid,
   }) {
-    print("Reached here");
     CircleModel circle = CircleModel(
         id: 'id',
         name: name,
@@ -71,7 +69,6 @@ class FirebaseHelper {
         linkCanEdit: linkCanEdit,
         createdAt: Timestamp.fromDate(DateTime.now()),
         updatedAt: Timestamp.fromDate(DateTime.now()));
-    print(circle);
     return _db.collection(AppConstants.circlesCollection).add(circle.toMap());
   }
 

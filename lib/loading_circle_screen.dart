@@ -12,7 +12,6 @@ class LoadCircleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("LoadingScreen");
     return FutureBuilder(
       future: FirebaseHelper.instance.getCircleByToken(token),
       builder: (context, snapshot) {

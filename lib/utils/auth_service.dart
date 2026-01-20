@@ -1,6 +1,7 @@
+import 'package:billcircle/utils/ui_helpers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../models/member_model.dart';
 
@@ -24,17 +25,15 @@ class AuthService {
       if (user != null) userDetails = await checkSync(user);
       return true;
     } catch (e) {
-      print("Error during Google Sign-In: $e");
       return false;
     }
   }
 
-  static Future<void> signOut() async {
+  static Future<void> signOut(BuildContext context) async {
     try {
       await _auth.signOut();
-      print("User signed out successfully");
     } catch (e) {
-      print("Error signing out: $e");
+      showAnimatedAlert(context, title: "Logout Issue", message: "There seems to be an issue with logout, try again", primaryText: "Ok");
     }
   }
 }

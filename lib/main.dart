@@ -4,7 +4,6 @@ import 'package:billcircle/utils/app_constants.dart';
 import 'package:billcircle/utils/platform_resolver.dart';
 import 'package:billcircle/utils/android_app_solver.dart';
 import 'package:billcircle/utils/theme_controller.dart';
-import 'package:billcircle/utils/ui_helpers.dart';
 import 'package:billcircle/utils/web_app_solver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +125,6 @@ class MainScreen extends StatelessWidget {
                       height: 48,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("moving to creation screen");
                           Navigator.push(
                             context,
                             MaterialPageRoute(
