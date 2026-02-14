@@ -1,6 +1,7 @@
 import 'package:billcircle/loading_circle_screen.dart';
 import 'package:billcircle/utils/app_bar.dart';
 import 'package:billcircle/utils/app_constants.dart';
+import 'package:billcircle/utils/debugger.dart';
 import 'package:billcircle/utils/platform_resolver.dart';
 import 'package:billcircle/utils/android_app_solver.dart';
 import 'package:billcircle/utils/theme_controller.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> {
     if (widget.action == "create") {
       return const CreateCircleScreen();
     } else if (widget.token != '' && widget.token != null) {
+      printDebug("Found Circle link");
       return LoadCircleScreen(token: widget.token!);
     } else {
       return MainScreen(token: widget.token);

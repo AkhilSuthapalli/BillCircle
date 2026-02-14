@@ -1,4 +1,5 @@
 import 'package:billcircle/utils/app_constants.dart';
+import 'package:billcircle/utils/debugger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/circle_model.dart';
 import '../models/expense_model.dart';
@@ -31,12 +32,14 @@ class FirebaseHelper {
   // ---------------------------
 
   Future<CircleModel?> getCircleByToken(String token) async {
+    printDebug("Token: $token");
     final query = await _db
         .collection('circles')
+        .where('visibility', isEqualTo: "public")
         .where('accessToken', isEqualTo: token)
         .limit(1)
         .get();
-
+    printDebug("Query completed, found ${query.docs.length}");
     if (query.docs.isEmpty) return null;
     return CircleModel.fromDoc(query.docs.first);
   }
